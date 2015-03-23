@@ -47,6 +47,10 @@ namespace Es7
             if ((this.Precedenti.Count == 0) && (this.Successive.Count == 0))
                 return;
 
+            // controlla se le attività precedenti sono state completate
+            if (this.Precedenti.Exists(x => !x.Conclusa))
+                return;
+
             this.DaIniziare = false;
             this.Iniziata   = true;
         }
