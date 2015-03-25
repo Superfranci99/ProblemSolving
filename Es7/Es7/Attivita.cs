@@ -23,6 +23,8 @@ namespace Es7
         private int Stato { get; set; }  // rappresenta il contatore dei giorni per cui l'attività è stata attiva
                                          // viene incrementato grazie al metodo Step()
 
+        public int GiornoInizio { get; set; }
+
         public Attivita(string nome, int durata, int alunni)
         {
             this.Nome       = nome;
@@ -33,6 +35,7 @@ namespace Es7
             this.Stato      = 0;
             this.Precedenti = new List<Attivita>();
             this.Successive = new List<Attivita>();
+            this.GiornoInizio = -1;
         }
 
         public Attivita(string nome, int durata, int alunni, List<Attivita> precedenti, List<Attivita> successive)
@@ -42,7 +45,7 @@ namespace Es7
             this.Successive = successive;
         }
 
-        public bool Inizia()
+        public bool Inizia(int giorno)
         {
             // controlla se è possibile iniziare
             if (Iniziata || Conclusa || (!DaIniziare))
@@ -54,6 +57,7 @@ namespace Es7
             if (this.Precedenti.Exists(x => !x.Conclusa))
                 return false;
 
+            this.GiornoInizio = giorno;
             this.DaIniziare = false;
             this.Iniziata   = true;
             return true;
