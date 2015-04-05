@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attivita.cs" />
+    <Compile Include="Gerarchia.cs" />
     <Compile Include="GestoreAlunni.cs" />
     <Compile Include="GestoreAttivita.cs" />
     <Compile Include="Parser.cs" />
