@@ -16,12 +16,36 @@ namespace Es7
         public Attivita PrimaAttivita  { get; set; }
         public Attivita UltimaAttivita { get; set; }
 
-        public GestoreAttivita(List<Attivita> listaAttivita, int primaAttivita, int ultimaAttivita)
+        public GestoreAttivita(List<Attivita> listaAttivita, Attivita primaAttivita, Attivita ultimaAttivita)
         {
             this.ListaAttivita = listaAttivita;
             this.Giorni = this.Alunni = 0;
-            this.PrimaAttivita  = this.ListaAttivita[primaAttivita - 1];
-            this.UltimaAttivita = this.ListaAttivita[ultimaAttivita - 1];
+            this.PrimaAttivita  = primaAttivita;
+            this.UltimaAttivita = ultimaAttivita;
+        }
+
+        public void EseguiProgetto()
+        {
+            while (!this.UltimaAttivita.Conclusa)
+            {
+                List<Attivita> correnti = new List<Attivita>(); // attività concluse in un giorno
+                foreach (Attivita attivita in this.ListaAttivita)
+                {
+                    // se le attività successive che avvengono nello stesso giorno dipendono da quelle che sono
+                    // avvenute prima sempre nello stesso giorno, saltale
+                    bool test = false;
+                    foreach(Attivita prec in attivita.Precedenti)
+                        if (correnti.Contains(prec)) { test = true; break; }
+                    if (test)
+                        continue;
+
+                    if (attivita.Inizia(this.Giorni) || attivita.Iniziata)
+                        correnti.Add(attivita); // avanza al giorno successivo per questa attività
+
+                    attivita.Step();
+                }
+                this.Giorni++;
+            }
         }
     }
 }
